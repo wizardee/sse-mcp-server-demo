@@ -14,6 +14,7 @@ Spring AI MCP (Model Context Protocol) 서버의 Server-Sent Events (SSE) 기반
 - **Build Tool**: Maven
 - **Protocol**: Model Context Protocol (MCP)
 - **Communication**: Server-Sent Events (SSE)
+- **Security**: HTTPS/SSL 지원
 
 ## 주요 기능
 
@@ -48,7 +49,9 @@ src/
 ## 설정
 
 ### 서버 설정
-- **포트**: 8088
+- **포트**: 48088
+- **프로토콜**: HTTPS
+- **SSL**: 자체 서명 인증서 (개발용)
 - **최대 업로드 크기**: 2MB
 
 ### MCP 설정
@@ -75,13 +78,14 @@ java -jar target/sse-demo-0.0.1-SNAPSHOT.jar
 ```
 
 ### 3. 애플리케이션 확인
-애플리케이션이 정상적으로 실행되면 `http://localhost:8088`에서 접근할 수 있습니다.
+애플리케이션이 정상적으로 실행되면 `https://localhost:48088`에서 접근할 수 있습니다.
 
 ## API 사용법
 
 ### SSE 연결
 ```bash
-curl -N http://localhost:8088/api/v1/sse
+# HTTPS 연결 (자체 서명 인증서이므로 -k 옵션 필요)
+curl -N -k https://localhost:48088/api/v1/sse
 ```
 
 ### MCP 메시지 전송

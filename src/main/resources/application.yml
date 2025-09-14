@@ -1,0 +1,34 @@
+# Server-Sent Events ?? ?????? ??
+# ?????? ?? ??
+server:
+  port: 8088
+  tomcat:
+    max-swallow-size: 2MB
+    max-http-form-post-size: 2MB
+spring:
+  application:
+    name: sse-mcp-server-demo
+    description: "??? ??? ???? ?? ??????"
+  ai:
+    mcp:
+      server:
+        enabled: true
+        stdio: false
+        name: sse-mcp-server-demo
+        version: 0.0.1
+        resource-change-notification: true
+        tool-change-notification: true
+        prompt-change-notification: true
+        sse-endpoint: /api/v1/sse
+        sse-message-endpoint: /api/v1/mcp/message
+        type: sync
+        capabilities:
+          tool: true
+          completion: true
+          resource: true
+          prompt: true
+
+logging:
+  level:
+    io.modelcontextprotocol: TRACE
+    org.springframework.ai.mcp: TRACE

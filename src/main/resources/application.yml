@@ -1,12 +1,12 @@
 # Server-Sent Events 기반 MCP 서버 설정
-# HTTPS 및 포트 설정
+# HTTP/HTTPS 및 포트 설정
 server:
   port: 48088
   ssl:
-    enabled: true
-    key-store: classpath:keystore.p12
-    key-store-password: changeit
-    key-store-type: PKCS12
+    enabled: ${SSL_ENABLED:false}
+    key-store: ${SSL_KEYSTORE:classpath:keystore.p12}
+    key-store-password: ${SSL_KEYSTORE_PASSWORD:changeit}
+    key-store-type: ${SSL_KEYSTORE_TYPE:PKCS12}
   tomcat:
     max-swallow-size: 2MB
     max-http-form-post-size: 2MB
@@ -37,3 +37,26 @@ logging:
   level:
     io.modelcontextprotocol: TRACE
     org.springframework.ai.mcp: TRACE
+
+---
+# HTTP 프로파일 (기본값)
+spring:
+  config:
+    activate:
+      on-profile: http
+server:
+  ssl:
+    enabled: false
+
+---
+# HTTPS 프로파일
+spring:
+  config:
+    activate:
+      on-profile: https
+server:
+  ssl:
+    enabled: true
+    key-store: classpath:keystore.p12
+    key-store-password: changeit
+    key-store-type: PKCS12

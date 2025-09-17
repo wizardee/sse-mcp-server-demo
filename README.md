@@ -50,8 +50,8 @@ src/
 
 ### 서버 설정
 - **포트**: 48088
-- **프로토콜**: HTTPS
-- **SSL**: 자체 서명 인증서 (개발용)
+- **프로토콜**: HTTP/HTTPS (프로파일로 선택 가능)
+- **SSL**: 자체 서명 인증서 (개발용, HTTPS 프로파일 사용 시)
 - **최대 업로드 크기**: 2MB
 
 ### MCP 설정
@@ -68,22 +68,48 @@ src/
 
 ### 2. 애플리케이션 실행
 
+#### HTTP 모드로 실행 (기본값)
 ```bash
 # Maven을 사용한 실행
-./mvnw spring-boot:run
+./mvnw spring-boot:run -Dspring-boot.run.profiles=http
 
 # 또는 JAR 빌드 후 실행
 ./mvnw clean package
-java -jar target/sse-demo-0.0.1-SNAPSHOT.jar
+java -jar target/sse-demo-0.0.1-SNAPSHOT.jar --spring.profiles.active=http
+```
+
+#### HTTPS 모드로 실행
+```bash
+# Maven을 사용한 실행
+./mvnw spring-boot:run -Dspring-boot.run.profiles=https
+
+# 또는 JAR 빌드 후 실행
+./mvnw clean package
+java -jar target/sse-demo-0.0.1-SNAPSHOT.jar --spring.profiles.active=https
+```
+
+#### 환경 변수를 통한 SSL 설정
+```bash
+# SSL 활성화
+export SSL_ENABLED=true
+export SSL_KEYSTORE=classpath:keystore.p12
+export SSL_KEYSTORE_PASSWORD=changeit
+export SSL_KEYSTORE_TYPE=PKCS12
+
+./mvnw spring-boot:run
 ```
 
 ### 3. 애플리케이션 확인
-애플리케이션이 정상적으로 실행되면 `https://localhost:48088`에서 접근할 수 있습니다.
+- **HTTP 모드**: `http://localhost:48088`에서 접근 가능
+- **HTTPS 모드**: `https://localhost:48088`에서 접근 가능 (자체 서명 인증서)
 
 ## API 사용법
 
 ### SSE 연결
 ```bash
+# HTTP 연결
+curl -N http://localhost:48088/api/v1/sse
+
 # HTTPS 연결 (자체 서명 인증서이므로 -k 옵션 필요)
 curl -N -k https://localhost:48088/api/v1/sse
 ```
